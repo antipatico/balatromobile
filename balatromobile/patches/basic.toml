@@ -1,0 +1,28 @@
+name = "basic"
+description = "Basic set of patches needed to make the game run on mobile"
+authors = ["blake502"]
+supported_platforms = ["android"]
+
+
+[[versions.v0]]
+target_file = "globals.lua"
+supported_hashes = ["sha256:2cf3296712"]
+search_string = "loadstring"
+patch_content = """
+    if love.system.getOS() == 'Android' then
+        self.F_DISCORD = true
+        self.F_NO_ACHIEVEMENTS = true
+        self.F_SOUND_THREAD = true
+        self.F_VIDEO_SETTINGS = false
+        self.F_QUIT_BUTTON = false
+        self.F_MOBILE_UI = true
+    end
+"""
+
+[[versions.v0]]
+target_file = "functions/button_callbacks.lua"
+supported_hashes = ["sha256:e96dd625c1"]
+search_string = "G.CONTROLLER.text_input_hook == e and G.CONTROLLER.HID.controller"
+patch_content = """
+  if G.CONTROLLER.text_input_hook == e and (G.CONTROLLER.HID.controller or G.CONTROLLER.HID.touch) then
+"""

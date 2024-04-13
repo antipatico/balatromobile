@@ -1,0 +1,14 @@
+name = "fps"
+description = "Cap the FPS limit to the FPS limit of the screen"
+authors = ["blake502"]
+supported_platforms = ["android"]
+
+
+[[versions.v0]]
+target_file = "main.lua"
+supported_hashes = ["skip"]
+search_string = "G.FPS_CAP = G.FPS_CAP or"
+patch_content = """
+        p_ww, p_hh, p_wflags = love.window.getMode()
+        G.FPS_CAP = p_wflags['refreshrate']
+"""

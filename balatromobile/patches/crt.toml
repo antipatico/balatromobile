@@ -1,0 +1,19 @@
+name = "crt"
+description = "Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]"
+authors = ["blake502"]
+supported_platforms = ["android"]
+
+
+[[versions.v0]]
+target_file = "globals.lua"
+supported_hashes = ["skip"]
+search_string = "crt = "
+patch_content = """
+            crt = 0,
+"""
+
+[[versions.v0]]
+target_file = "game.lua"
+supported_hashes = ["skip"]
+search_string = "G.SHADERS['CRT'])"
+patch_content = ""
