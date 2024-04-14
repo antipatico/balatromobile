@@ -1,6 +1,6 @@
 # <img src="icon.png" width="60px"/> Balatro Mobile
 
-Create a mobile version of Balatro from the Windows base game. 
+Create a mobile version of Balatro from the Windows base version of the game. 
 
 Python fork of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker) by [blake502](https://github.com/blake502) and friends. Compared to the original one, it is *NIX friendly, more modular, has patch versioning and does not need to download tools from the internet.
 
@@ -21,7 +21,7 @@ Open a terminal and run
 python3 -m pip install balatromobile
 ```
 
-**NOTE**: the package as no dependencies, you can install it in any venv without any problem.
+**NOTE**: the package has no dependencies, you can install it in any venv without any problem.
 
 ## Usage
 ```bash
