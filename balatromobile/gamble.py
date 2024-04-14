@@ -7,6 +7,7 @@ import sys
 import shutil
 from .resources import all_artifacts
 from .patcher import all_patches
+from .__version__ import __version__
 
 
 def main():
@@ -14,6 +15,7 @@ def main():
     # TODO: check programs exit status
     # TODO: more argparse options
     parser = ArgumentParser()
+    parser.add_argument('--version', action='version', version=f'%(prog)s {__version__}')
     parser.add_argument("BALATRO_EXE")
     args = parser.parse_args()
     balatro_exe = Path(args.BALATRO_EXE)
@@ -25,7 +27,7 @@ def main():
     with TemporaryDirectory() as d:
         balatro = Path(d) / "Balatro"
         subprocess.run(["7za", "x", balatro_exe.absolute(), f"-o{balatro}"])
-        for patch in [patches.basic, patches.landscape, patches.crt, patches.fps]:
+        for patch in [patches.basic, patches.landscape_hidpi, patches.crt, patches.fps, patches.external_storage]:
             patch.apply(balatro)
         balatro_version = (balatro / "version.jkr").read_text().splitlines()[0]
         app = Path(d) / "balatro_app"

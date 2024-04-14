@@ -5,6 +5,16 @@ from hashlib import sha256
 from .resources import get_patch
 
 
+def all_patches():
+    return Namespace(
+        basic = PatchFile("basic.toml"),
+        landscape = PatchFile("landscape.toml"),
+        landscape_hidpi = PatchFile("landscape-hidpi.toml"),
+        crt = PatchFile("crt.toml"),
+        fps = PatchFile("fps.toml"),
+        external_storage = PatchFile("external-storage.toml"),
+    )
+
 class Patch:
     def __init__(self, patch: dict):
         self.target_file = patch["target_file"]
@@ -71,11 +81,3 @@ class PatchFile:
                 return k
         raise Exception(f'Cannot find any compatible patch version with given Balatro.exe for {self}')
         
-
-def all_patches():
-    return Namespace(
-        basic = PatchFile("basic.toml"),
-        landscape = PatchFile("landscape.toml"),
-        crt = PatchFile("crt.toml"),
-        fps = PatchFile("fps.toml"),
-    )

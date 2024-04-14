@@ -1,0 +1,14 @@
+name = "landscape-hidpi"
+description = "Forces the game to always stay in landscape mode and apply hidpi fix."
+authors = ["blake502"]
+supported_platforms = ["android"]
+
+
+[[versions.v0]]
+target_file = "main.lua"
+supported_hashes = ["sha256:f2cb21e757"]
+search_string = "local os = love.system.getOS()"
+patch_content = """
+    local os = love.system.getOS()
+    love.window.setMode(2, 1, {highdpi = true})
+"""

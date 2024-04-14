@@ -1,0 +1,14 @@
+name = "external-storage"
+description = "Save game files under /sdcard/Android"
+authors = ["blake502"]
+supported_platforms = ["android"]
+
+
+[[versions.v0]]
+target_file = "conf.lua"
+supported_hashes = ["sha256:1e2499c2cb"]
+search_string = "function love.conf(t)"
+patch_content = """
+function love.conf(t)
+	t.externalstorage = true
+"""

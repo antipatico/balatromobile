@@ -29,5 +29,17 @@ balatromobile Balatro.exe
 ```
 This command will output an APK with all needed patches and already signed. Ready to be installed on your Android device.
 
+## Save files
+You can find and modify your save files in your sdcard, more specifically under:
+```
+Android/data/dev.bootkit.balatro/
+```
+Feel free to backup your save files or to upload your files another console / computer there!
+
+## Patches
+Every patch is versioned, allowing the upkeeping of different patches for different versions of the game.
+
+You can find all the available patches under [patches/](balatromobile/artifacts/patches).
+
 ## Credits
 This software is a rewrite of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker). It uses [APKEditor](https://github.com/REAndroid/APKEditor) [Uber Apk Signer](https://github.com/patrickfav/uber-apk-signer) and [Love Android](https://github.com/love2d/love-android)
