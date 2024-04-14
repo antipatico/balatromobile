@@ -21,7 +21,7 @@ Open a terminal and run
 python3 -m pip install balatromobile
 ```
 
-**NOTE**: the package as not dependencies, you can install it in any venv without any problem.
+**NOTE**: the package as no dependencies, you can install it in any venv without any problem.
 
 ## Usage
 ```bash
@@ -29,3 +29,5 @@ balatromobile Balatro.exe
 ```
 This command will output an APK with all needed patches and already signed. Ready to be installed on your Android device.
 
+## Credits
+This software is a rewrite of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker). It uses [APKEditor](https://github.com/REAndroid/APKEditor) [Uber Apk Signer](https://github.com/patrickfav/uber-apk-signer) and [Love Android](https://github.com/love2d/love-android)
