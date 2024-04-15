@@ -90,7 +90,7 @@ options:
 
 One way to do it, would be to ask permission for a directory using `Intent.ACTION_OPEN_DOCUMENT_TREE`. The problem with this approach is that the current implementation uses [PhysicsFS](https://icculus.org/physfs/) and [SDL](https://www.libsdl.org/). While it could be possible at the SDL level to se the _Android API_ to open and read files using Documents, that is not the way it is used today. old-school syscalls (as far as I understand) are used by _PhysicsFS_.
 
-I worked on a [patch of GameActivity.java](misc/GameActivity.java), which correctly asks for permissions and store those permissions. I was also able to retrieve the preference (in a dirty and hacky way) in _SDL_ and convert back to a 'standard filesystem path'. The problem is, that is a really dirty implementation and it is very prone to errors.
+I worked on a [patch of GameActivity.java](https://gist.github.com/antipatico/73f718d5b37b507b6b6dbf9bf92052e0), which correctly asks for permissions and store those permissions. I was also able to retrieve the preference (in a dirty and hacky way) in _SDL_ and convert back to a 'standard filesystem path'. The problem is, that is a really dirty implementation and it is very prone to errors.
 
 Do you have any suggestion? Open an issue / PR!
 
