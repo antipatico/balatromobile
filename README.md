@@ -20,8 +20,6 @@ Open a terminal and run
 python3 -m pip install balatromobile
 ```
 
-**NOTE**: the package has no dependencies, you can install it in any venv without any problem.
-
 ## Usage
 ```bash
 balatromobile android Balatro.exe
