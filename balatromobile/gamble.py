@@ -1,45 +1,85 @@
 
 import subprocess
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import sys
 import shutil
+from zipfile import ZipFile
+from tabulate import tabulate
+
 from .resources import all_artifacts
-from .patcher import all_patches
+from .patcher import all_patches, select_patches, DEFAULT_PATCHES
+from .utils import is_java_installed, run_silent
 from .__version__ import __version__
 
 
 def main():
-    # TODO: check if needed programs are installed
-    # TODO: check programs exit status
-    # TODO: more argparse options
-    parser = ArgumentParser()
-    parser.add_argument('--version', action='version', version=f'%(prog)s {__version__}')
-    parser.add_argument("BALATRO_EXE")
-    args = parser.parse_args()
+    #TODO: iOS
+    args = parse_args()
+    if args.command == "android":
+        android(args)
+    elif args.command == "list-patches":
+        list_patches(args)
+
+def android(args: Namespace):
     balatro_exe = Path(args.BALATRO_EXE)
     artifacts = all_artifacts()
-    patches = all_patches()
+    patches = select_patches(args.patches)
+    if sys.version_info.major == 3 and sys.version_info.minor < 11:
+        print("WARNING: Python version < 3.11 is not tested and may not be supported")
+    if not is_java_installed():
+        print("ERROR: Java is not installed. Install Java-JRE before running this script")
+        sys.exit(1)
     if not balatro_exe.is_file():
         print("ERROR: invalid Balatro.exe")
         sys.exit(1)
     with TemporaryDirectory() as d:
         balatro = Path(d) / "Balatro"
-        subprocess.run(["7za", "x", balatro_exe.absolute(), f"-o{balatro}"])
-        for patch in [patches.basic, patches.landscape_hidpi, patches.crt, patches.fps, patches.external_storage]:
+        with ZipFile(balatro_exe, "r") as z:
+            z.extractall(balatro)
+        for patch in patches:
             patch.apply(balatro)
         balatro_version = (balatro / "version.jkr").read_text().splitlines()[0]
         app = Path(d) / "balatro_app"
-        subprocess.run(["java", "-jar", artifacts.apk_editor.absolute(), "d", "-i", artifacts.love_apk.absolute(), "-o", app.absolute()])
-        manifest = artifacts.android_manifest.read_text().format(package='dev.bootkit.balatro', version=balatro_version, label="Balatro Mobile (unofficial)")
+        run_silent(["java", "-jar", artifacts.apk_editor.absolute(), "d", "-i", artifacts.love_apk.absolute(), "-o", app.absolute()])
+        manifest_tpl = artifacts.android_manifest.read_text()
+        manifest = manifest_tpl.format(package=args.package_name, version=balatro_version, label=args.display_name)
         (app / "AndroidManifest.xml").write_text(manifest)
         shutil.copytree(artifacts.android_res, app / "resources" / "package_1" / "res", dirs_exist_ok=True)
-        subprocess.run(["7za", "a", "-tzip", (app / "root" / "assets" / "game.love").absolute()], cwd=balatro.absolute())
+        shutil.make_archive((Path(d) / "game.love").absolute(), "zip", balatro.absolute())
+        shutil.move(Path(d) / "game.love.zip", (app / "root" / "assets" / "game.love"))
         apk = Path(d) / "balatro.apk"
-        subprocess.run(["java", "-jar", artifacts.apk_editor.absolute(), "b", "-i", app.absolute(), "-o", apk.absolute()])
-        subprocess.run(["java", "-jar", artifacts.apk_signer.absolute(), "-a", apk.absolute()])
-        shutil.move(Path(d) / "balatro-aligned-debugSigned.apk", f"balatro-{balatro_version}.apk")
+        run_silent(["java", "-jar", artifacts.apk_editor.absolute(), "b", "-i", app.absolute(), "-o", apk.absolute()])
+        output_apk = Path(args.output) if args.output else Path(f"balatro-{balatro_version}.apk")
+        if args.skip_sign:
+            shutil.move(apk.absolute(), output_apk.absolute())
+        else:
+            run_silent(["java", "-jar", artifacts.apk_signer.absolute(), "-a", apk.absolute()])
+            shutil.move(Path(d) / "balatro-aligned-debugSigned.apk", output_apk)
+
+def list_patches(args: Namespace):
+    print(tabulate(
+        headers=["Name", "Description", "Platforms"],
+        tabular_data=[[p.name, p.description, ",".join(p.supported_platforms)] for p in all_patches()]
+    ))
+    pass
+
+def parse_args() -> Namespace:
+    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--version', action='version', version=f'%(prog)s {__version__}')
+    commands = parser.add_subparsers(title='Commands', dest='command', required=True)
+    # android
+    android = commands.add_parser('android', help='Create an Android APK file')
+    android.add_argument("BALATRO_EXE", help="Path to Balatro.exe file")
+    android.add_argument("--output", "-o", required=False, help="Output path for apk (default: balatro-GAME_VERSION.apk)")
+    android.add_argument("--patches", "-p", default=DEFAULT_PATCHES, help="Comma-separated list of patches to apply (default: %(default)s)")
+    android.add_argument("--skip-sign", "-s", action="store_true", help="Skip signing the apk file with Uber Apk Signer (default: %(default)s)")
+    android.add_argument("--display-name", default="Balatro Mobile (unofficial)", help="Change application display name (default: %(default)s)")
+    android.add_argument("--package-name", default="dev.bootkit.balatro", help="Change application package name (default: %(default)s)")
+    # list-patches
+    android = commands.add_parser('list-patches', help='List available patches')
+    return parser.parse_args()
 
 if __name__=="__main__":
     main()

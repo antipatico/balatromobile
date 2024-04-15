@@ -1,5 +1,5 @@
 name = "external-storage"
-description = "Save game files under /sdcard/Android"
+description = "Save game files under /sdcard/Android [Works well for Android < 13]"
 authors = ["blake502"]
 supported_platforms = ["android"]
 

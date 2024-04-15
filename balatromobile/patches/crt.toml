@@ -1,7 +1,7 @@
 name = "crt"
 description = "Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]"
 authors = ["blake502"]
-supported_platforms = ["android"]
+supported_platforms = ["android", "ios"]
 
 
 [[versions.v0]]

@@ -1,7 +1,7 @@
 name = "landscape"
 description = "Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device"
 authors = ["blake502"]
-supported_platforms = ["android"]
+supported_platforms = ["android", "ios"]
 
 
 [[versions.v0]]

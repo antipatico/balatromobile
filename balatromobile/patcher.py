@@ -4,16 +4,8 @@ from argparse import Namespace
 from hashlib import sha256
 from .resources import get_patch
 
+DEFAULT_PATCHES = "basic,landscape,crt,fps"
 
-def all_patches():
-    return Namespace(
-        basic = PatchFile("basic.toml"),
-        landscape = PatchFile("landscape.toml"),
-        landscape_hidpi = PatchFile("landscape-hidpi.toml"),
-        crt = PatchFile("crt.toml"),
-        fps = PatchFile("fps.toml"),
-        external_storage = PatchFile("external-storage.toml"),
-    )
 
 class Patch:
     def __init__(self, patch: dict):
@@ -42,7 +34,8 @@ class PatchList:
         self.patches = [Patch(p) for p in patch_list]
     
     def is_compatible(self, balatro: Path):
-        return all(p.check_checksum(balatro) for p in self.patches)
+        return True # Disabling it for now, it may be sensible to save the game version instead. A problem is patching multiple times the save file.
+        #return all(p.check_checksum(balatro) for p in self.patches)
     
     def apply_all(self, balatro: Path):
         for p in self.patches:
@@ -80,4 +73,18 @@ class PatchFile:
                 v.apply_all(balatro)
                 return k
         raise Exception(f'Cannot find any compatible patch version with given Balatro.exe for {self}')
-        
+
+
+def all_patches() -> list[PatchFile]:
+    return [
+        PatchFile("basic.toml"),
+        PatchFile("landscape.toml"),
+        PatchFile("landscape-hidpi.toml"),
+        PatchFile("crt.toml"),
+        PatchFile("fps.toml"),
+        PatchFile("external-storage.toml"),
+    ]
+
+def select_patches(patches: str) -> list[PatchFile]:
+    patches = patches.split(",")
+    return list(filter(lambda p: p.name in patches, all_patches()))

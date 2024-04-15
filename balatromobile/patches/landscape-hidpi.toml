@@ -1,7 +1,7 @@
 name = "landscape-hidpi"
-description = "Forces the game to always stay in landscape mode and apply hidpi fix."
+description = "Forces the game to always stay in landscape mode and apply hidpi fix for iOS"
 authors = ["blake502"]
-supported_platforms = ["android"]
+supported_platforms = ["ios"]
 
 
 [[versions.v0]]

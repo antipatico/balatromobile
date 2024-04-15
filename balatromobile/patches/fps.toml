@@ -1,7 +1,7 @@
 name = "fps"
 description = "Cap the FPS limit to the FPS limit of the screen"
 authors = ["blake502"]
-supported_platforms = ["android"]
+supported_platforms = ["android", "ios"]
 
 
 [[versions.v0]]
