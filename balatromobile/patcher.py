@@ -1,3 +1,4 @@
+import base64
 import tomllib
 from pathlib import Path
 from argparse import Namespace
@@ -13,6 +14,9 @@ class Patch:
         self.hashes = patch["supported_hashes"]
         self.search_string = patch["search_string"]
         self.content = patch["patch_content"]
+        self.binary_replace = None
+        if "binary_replace" in patch:
+            self.binary_replace = patch["binary_replace"]
 
     def check_checksum(self, balatro: Path):
         target = balatro / Path(self.target_file)
@@ -25,6 +29,9 @@ class Patch:
     
     def apply(self, balatro: Path):
         target = balatro / Path(self.target_file)
+        if self.binary_replace:
+            target.write_bytes(base64.b64decode(self.binary_replace))
+            return
         patched = "\n".join([l if self.search_string not in l else self.content for l in target.read_text().splitlines()])
         target.write_text(patched)
 
@@ -83,6 +90,9 @@ def all_patches() -> list[PatchFile]:
         PatchFile("crt.toml"),
         PatchFile("fps.toml"),
         PatchFile("external-storage.toml"),
+        PatchFile("simple-fx.toml"),
+        PatchFile("square-display.toml"),
+        PatchFile("nunito-font.toml"),
     ]
 
 def select_patches(patches: str) -> list[PatchFile]:
