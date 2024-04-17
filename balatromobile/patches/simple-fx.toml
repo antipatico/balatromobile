@@ -1,5 +1,5 @@
 name = "simple-fx"
-description = "Disable background, shadows, and bloom effect."
+description = "Disable gameplay visible behind menu background, shadows, and bloom effects."
 authors = ["blake502","rancossack"]
 supported_platforms = ["android", "ios"]
 # Adapted from https://github.com/nkahoang/PortMaster-nkaHoang

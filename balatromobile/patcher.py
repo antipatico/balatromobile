@@ -91,6 +91,7 @@ def all_patches() -> list[PatchFile]:
         PatchFile("fps.toml"),
         PatchFile("external-storage.toml"),
         PatchFile("simple-fx.toml"),
+        PatchFile("no-background.toml"),
         PatchFile("square-display.toml"),
         PatchFile("nunito-font.toml"),
     ]
