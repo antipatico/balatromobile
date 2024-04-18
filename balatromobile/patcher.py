@@ -1,6 +1,5 @@
 import tomllib
 from pathlib import Path
-from hashlib import sha256
 from .resources import get_patch, get_artifact
 
 DEFAULT_PATCHES = "basic,landscape,crt,fps"
@@ -8,24 +7,15 @@ DEFAULT_PATCHES = "basic,landscape,crt,fps"
 
 class Patch:
     def __init__(self, patch: dict):
-        self.target_file = patch["target_file"]
-        self.hashes = patch["supported_hashes"]
         self.search_string = patch.get("search_string", None)
-        self.content = patch.get("patch_content", None)
+        self.content = patch.get("patch_content", "")
         artifact_name = patch.get("artifact", None)
         self.artifact = get_artifact(artifact_name) if artifact_name is not None else None
-
-    def check_checksum(self, balatro: Path):
-        target = balatro / Path(self.target_file)
-        if not target.exists() or not target.is_file():
-            return False
-        if "skip" in self.hashes and len(self.hashes) == 1:
-            return True
-        hashsum = sha256(target.read_bytes()).hexdigest()
-        return f"sha256:{hashsum[:10]}" in self.hashes
+        if self.search_string == self.artifact == None:
+            raise Exception(f"Empty patches are not allowed")
     
-    def apply(self, balatro: Path):
-        target = balatro / Path(self.target_file)
+    def apply(self, target_file: Path):
+        target =target_file
         if self.artifact is not None:
             target.write_bytes(self.artifact.read_bytes())
             return
@@ -33,31 +23,40 @@ class Patch:
         target.write_text(patched)
 
 
-class PatchList:
-    def __init__(self, patch_list: list):
-        self.patches = [Patch(p) for p in patch_list]
-    
-    def is_compatible(self, balatro: Path):
-        return True # Disabling it for now, it may be sensible to save the game version instead. A problem is patching multiple times the save file.
-        #return all(p.check_checksum(balatro) for p in self.patches)
+class PatchFile:
+    def __init__(self, patch_file: dict):
+        self.target_file = Path(patch_file["target_file"])
+        self.patches = [Patch(p) for p in patch_file["patches"]]
     
     def apply_all(self, balatro: Path):
-        for p in self.patches:
-            p.apply(balatro)
+        [p.apply(balatro / self.target_file) for p in self.patches]
 
 
-class PatchFile:
-    def __init__(self, filename):
-        self.path = get_patch(filename)
+class PatchList:
+    def __init__(self, patch_list: dict):
+        # Must be unique across patch lists to differentiate them
+        self.version = patch_list['version']
+        # If not defined, skip version checking
+        self.supported_game_versions = patch_list.get('supported_game_versions', None) 
+        self.patch_files = [PatchFile(p) for p in patch_list["patch_files"]]
+    
+    def is_compatible(self, version: str):
+        return self.supported_game_versions is None or version in self.supported_game_versions
+    
+    def apply_all(self, balatro: Path):
+        [p.apply_all(balatro) for p in self.patch_files]
+
+
+class VersionedPatch:
+    def __init__(self, name: str):
+        self.path = get_patch(f"{name}.toml")
         with open(self.path,"rb") as f:
             toml = tomllib.load(f)
-        self.name : str = toml["name"]
+        self.name : str = name
         self.description : str = toml["description"]
         self.authors : list = toml["authors"]
         self.supported_platforms : list = toml["supported_platforms"]
-        self.versions = {}
-        for k, v in toml['versions'].items():
-            self.versions[k] = PatchList(v)
+        self.patch_lists = [PatchList(p) for p in toml['patch_lists']]
 
     def supports_android(self) -> bool:
         return "android" in self.supported_platforms
@@ -66,37 +65,39 @@ class PatchFile:
         return "ios" in self.supported_platforms
     
     def __str__(self) -> str:
-        return f'PatchFile(name="{self.name}", description="{self.description}", supported_platforms=[{",".join(self.supported_platforms)}])'
+        return f'VersionedPatch(name="{self.name}", description="{self.description}", supported_platforms=[{",".join(self.supported_platforms)}])'
 
     def __repr__(self) -> str:
         return str(self)
     
-    def apply(self, balatro: Path) -> str:
-        for k, v in self.versions.items():
-            if v.is_compatible(balatro):
-                v.apply_all(balatro)
-                return k
-        raise Exception(f'Cannot find any compatible patch version with given Balatro.exe for {self}')
+    def apply(self, balatro: Path, version: str) -> int:
+        # TODO: allow user to specify specific patch version
+        # TODO: allow user to force patch
+        for p in self.patch_lists:
+            if p.is_compatible(version):
+                p.apply_all(balatro)
+                return p.version
+        raise Exception(f'Cannot find any compatible Patch version of "{self.name}" for given Balatro.exe having game version "{version}"')
 
 
-def all_patches() -> list[PatchFile]:
+def all_patches() -> list[VersionedPatch]:
     return [
-        PatchFile("basic.toml"),
-        PatchFile("landscape.toml"),
-        PatchFile("landscape-hidpi.toml"),
-        PatchFile("crt.toml"),
-        PatchFile("fps.toml"),
-        PatchFile("external-storage.toml"),
-        PatchFile("portmaster-simple-fx.toml"),
-        PatchFile("portmaster-no-background.toml"),
-        PatchFile("portmaster-square-display.toml"),
-        PatchFile("portmaster-nunito-font.toml"),
+        VersionedPatch("basic"),
+        VersionedPatch("crt"),
+        VersionedPatch("external-storage"),
+        VersionedPatch("fps"),
+        VersionedPatch("landscape-hidpi"),
+        VersionedPatch("landscape"),
+        VersionedPatch("no-background"),
+        VersionedPatch("nunito-font"),
+        VersionedPatch("simple-fx"),
+        VersionedPatch("square-display"),
     ]
 
-def select_patches(patches: str) -> list[PatchFile]:
+def select_patches(patches: str) -> list[VersionedPatch]:
     desired_patches = patches.split(",")
-    patch_files : list[PatchFile] = list(filter(lambda p: p.name in desired_patches, all_patches()))
+    patch_files : list[VersionedPatch] = list(filter(lambda p: p.name in desired_patches, all_patches()))
     if len(desired_patches) != len(patch_files):
         missing_patches = [p for p in desired_patches if p not in [P.name for P in patch_files]]
-        raise ValueError(f'One or more patches not found: {",".join(missing_patches)}')
+        raise Exception(f'One or more patches not found: {",".join(missing_patches)}')
     return patch_files

@@ -1,0 +1,42 @@
+description = "Optimize for square and square-like displays. From PortMaster"
+authors = ["nkahoang", "rancossack"]
+supported_platforms = ["android", "ios"]
+
+[[patch_lists]]
+  version = 0
+  # supported_game_versions = ALL
+  [[patch_lists.patch_files]]
+    target_file = "functions/common_events.lua"
+    [[patch_lists.patch_files.patches]]
+      search_string = "bloom = 1"
+      patch_content = """"
+    bloom = 0
+"""
+
+    # move the hands a bit to the right
+    [[patch_lists.patch_files.patches]]
+      search_string = "G.hand.T.x = G.TILE_W - G.hand.T.w - 2.85"
+      patch_content = """
+        G.hand.T.x = G.TILE_W - G.hand.T.w - 1
+"""
+
+    # then move the playing area up
+    [[patch_lists.patch_files.patches]]
+      search_string = "G.play.T.y = G.hand.T.y - 3.6"
+      patch_content = """
+        G.play.T.y = G.hand.T.y - 4.5
+"""
+
+    # move the decks to the right
+    [[patch_lists.patch_files.patches]]
+      search_string = "G.deck.T.x = G.TILE_W - G.deck.T.w - 0.5"
+      patch_content = """
+        G.deck.T.x = G.TILE_W - G.deck.T.w + 0.85
+"""
+
+    # move the jokers to the left
+    [[patch_lists.patch_files.patches]]
+      search_string = "G.jokers.T.x = G.hand.T.x - 0.1"
+      patch_content = """
+        G.jokers.T.x = G.hand.T.x - 0.2
+"""

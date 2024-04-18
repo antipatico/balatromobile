@@ -10,7 +10,7 @@ from tabulate import tabulate
 
 from .resources import all_artifacts
 from .patcher import all_patches, select_patches, DEFAULT_PATCHES
-from .utils import is_java_installed, run_silent
+from .utils import get_balatro_version, is_java_installed, run_silent
 from .__version__ import __version__
 
 
@@ -38,9 +38,9 @@ def android(args: Namespace):
         balatro = Path(d) / "Balatro"
         with ZipFile(balatro_exe, "r") as z:
             z.extractall(balatro)
+        balatro_version = get_balatro_version(balatro)
         for patch in patches:
-            patch.apply(balatro)
-        balatro_version = (balatro / "version.jkr").read_text().splitlines()[0]
+            patch.apply(balatro, balatro_version)
         app = Path(d) / "balatro_app"
         run_silent(["java", "-jar", artifacts.apk_editor.absolute(), "d", "-i", artifacts.love_apk.absolute(), "-o", app.absolute()])
         manifest_tpl = artifacts.android_manifest.read_text()

@@ -1,0 +1,35 @@
+description = "Disable gameplay visible behind menu background, shadows, and bloom effects. From PortMaster"
+authors = ["nkahoang","rancossack"]
+supported_platforms = ["android", "ios"]
+
+[[patch_lists]]
+  version = 0
+  # supported_game_versions = ALL
+
+  [[patch_lists.patch_files]]
+    target_file = "globals.lua"
+    [[patch_lists.patch_files.patches]]
+      search_string = "bloom = 1"
+      patch_content = """
+            bloom = 0,
+"""
+    [[patch_lists.patch_files.patches]]
+      search_string = "shadows = 'On'"
+      patch_content = """
+            shadows = 'Off',
+"""
+    [[patch_lists.patch_files.patches]]
+      search_string = "self.F_HIDE_BG = false"
+      patch_content = """
+    self.F_HIDE_BG = true
+"""
+    [[patch_lists.patch_files.patches]]
+      search_string = "self.TILE_W = self.F_MOBILE_UI and 11.5 or 20"
+      patch_content = """
+    self.TILE_W = 20
+"""
+    [[patch_lists.patch_files.patches]]
+      search_string = "self.TILE_H = self.F_MOBILE_UI and 20 or 11.5"
+      patch_content = """
+    self.TILE_H = 11.5
+"""

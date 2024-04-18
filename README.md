@@ -46,18 +46,18 @@ A refactor is needed to make the version system make sense.
 You can list the available patches using the `list-patches` command:
 ```
 $ balatromobile list-patches
-Name                       Description                                                                                      Platforms
--------------------------  -----------------------------------------------------------------------------------------------  -----------
-basic                      Basic set of patches needed to make the game run on mobile                                       android
-landscape                  Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  android,ios
-landscape-hidpi            Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     ios
-crt                        Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           android,ios
-fps                        Cap the FPS limit to the FPS limit of the screen                                                 android,ios
-external-storage           Save game files under /sdcard/Android [Works well for Android < 13]                              android
-portmaster-simple-fx       Disable gameplay visible behind menu background, shadows, and bloom effects. From PortMaster     android,ios
-portmaster-no-background   Disable background animations and effects. From PortMaster                                       android,ios
-portmaster-square-display  Optimize for square and square-like displays. From PortMaster                                    android,ios
-portmaster-nunito-font     Replace the main font used with nunito, optimized for smaller displays. From PortMaster          android,ios
+Name              Description                                                                                      Platforms
+----------------  -----------------------------------------------------------------------------------------------  -----------
+basic             Basic set of patches needed to make the game run on mobile                                       android
+crt               Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           android,ios
+external-storage  Save game files under /sdcard/Android [Works well for Android < 13]                              android
+fps               Cap the FPS limit to the FPS limit of the screen                                                 android,ios
+landscape-hidpi   Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     ios
+landscape         Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  android,ios
+no-background     Disable background animations and effects. From PortMaster                                       android,ios
+nunito-font       Replace the main font used with nunito, optimized for smaller displays. From PortMaster          android,ios
+simple-fx         Disable gameplay visible behind menu background, shadows, and bloom effects. From PortMaster     android,ios
+square-display    Optimize for square and square-like displays. From PortMaster                                    android,ios
 ```
 It is possible to specify the list of patches you want to apply by supplying a comma-separated list of patches, for example:
 ```bash

@@ -1,14 +1,15 @@
-name = "landscape-hidpi"
 description = "Forces the game to always stay in landscape mode and apply hidpi fix for iOS"
 authors = ["blake502"]
 supported_platforms = ["ios"]
 
-
-[[versions.v0]]
-target_file = "main.lua"
-supported_hashes = ["sha256:f2cb21e757"]
-search_string = "local os = love.system.getOS()"
-patch_content = """
+[[patch_lists]]
+  version = 0
+  # supported_game_versions = ALL
+  [[patch_lists.patch_files]]
+    target_file = "main.lua"
+    [[patch_lists.patch_files.patches]]
+      search_string = "local os = love.system.getOS()"
+      patch_content = """
     local os = love.system.getOS()
     love.window.setMode(2, 1, {highdpi = true})
 """

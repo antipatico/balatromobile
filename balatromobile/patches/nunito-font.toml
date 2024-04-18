@@ -1,0 +1,11 @@
+description = "Replace the main font used with nunito, optimized for smaller displays. From PortMaster"
+authors = ["nkahoang", "rancossack"]
+supported_platforms = ["android", "ios"]
+
+[[patch_lists]]
+  version = 0
+  # supported_game_versions = ALL
+  [[patch_lists.patch_files]]
+    target_file = "resources/fonts/m6x11plus.ttf"
+    [[patch_lists.patch_files.patches]]
+        artifact = "nunito-font.tty"

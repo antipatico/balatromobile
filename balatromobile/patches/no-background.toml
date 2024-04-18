@@ -1,0 +1,24 @@
+description = "Disable background animations and effects. From PortMaster"
+authors = ["nkahoang","rancossack"]
+supported_platforms = ["android", "ios"]
+
+[[patch_lists]]
+  version = 0
+  # supported_game_versions = ALL
+
+  [[patch_lists.patch_files]]
+    target_file = "globals.lua"
+    [[patch_lists.patch_files.patches]]
+      search_string = "self.DEBUG = false"
+patch_content = """
+    self.DEBUG = false
+    self.debug_background_toggle = true
+"""
+
+  [[patch_lists.patch_files]]
+    target_file = "game.lua"
+    [[patch_lists.patch_files.patches]]
+      search_string = "love.graphics.clear({0,1,0,1})"
+      patch_content = """
+            love.graphics.clear(mix_colours(G.C.DYN_UI.DARK, {0.17,0.35,0.26,1}, 0.4))
+"""
