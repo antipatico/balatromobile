@@ -2,3 +2,4 @@
 *.jar filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
 *.xcf filter=lfs diff=lfs merge=lfs -text
+*.tty filter=lfs diff=lfs merge=lfs -text

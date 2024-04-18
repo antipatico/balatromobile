@@ -1,8 +1,7 @@
-name = "square-display"
-description = "Optimize for square and square-like displays."
-authors = ["blake502", "rancossack"]
+name = "portmaster-square-display"
+description = "Optimize for square and square-like displays. From PortMaster"
+authors = ["nkahoang", "rancossack"]
 supported_platforms = ["android", "ios"]
-# Adapted from https://github.com/nkahoang/PortMaster-nkaHoang
 
 
 [[versions.v0]]

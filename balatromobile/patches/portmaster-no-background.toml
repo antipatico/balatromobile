@@ -1,6 +1,6 @@
-name = "no-background"
-description = "Disable background animations and effects."
-authors = ["blake502","rancossack"]
+name = "portmaster-no-background"
+description = "Disable background animations and effects. From PortMaster"
+authors = ["nkahoang","rancossack"]
 supported_platforms = ["android", "ios"]
 
 

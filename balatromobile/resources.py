@@ -6,7 +6,7 @@ from pathlib import Path
 def get_resorce(basepath: str | Path, name: str | Path):
      with importlib.resources.as_file(importlib.resources.files(__package__)) as f:
         res = f / basepath / name
-        if not res.exists():
+        if name is None or not res.exists():
             raise Exception(f'Missing resource: "{name}" in "{res.absolute()}"')
         return res
 

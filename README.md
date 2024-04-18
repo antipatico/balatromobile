@@ -2,7 +2,7 @@
 
 Create a mobile version of Balatro from the Windows base version of the game. 
 
-Python fork of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker) by [blake502](https://github.com/blake502) and friends. Compared to the original one, it is *NIX friendly, more modular, has patch versioning and does not need to download tools from the internet.
+Python rewrite of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker) by [blake502](https://github.com/blake502) and friends. Compared to the original one, it is *NIX friendly, more modular, has patch versioning and does not try to download and install tools from the internet.
 
 As of today, it only supports Android, but estending it to iOS should be trivial.
 
@@ -46,14 +46,18 @@ A refactor is needed to make the version system make sense.
 You can list the available patches using the `list-patches` command:
 ```
 $ balatromobile list-patches
-Name              Description                                                                                      Platforms
-----------------  -----------------------------------------------------------------------------------------------  -----------
-basic             Basic set of patches needed to make the game run on mobile                                       android
-landscape         Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  android,ios
-landscape-hidpi   Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     ios
-crt               Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           android,ios
-fps               Cap the FPS limit to the FPS limit of the screen                                                 android,ios
-external-storage  Save game files under /sdcard/Android [Works well for Android < 13]                              android
+Name                       Description                                                                                      Platforms
+-------------------------  -----------------------------------------------------------------------------------------------  -----------
+basic                      Basic set of patches needed to make the game run on mobile                                       android
+landscape                  Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  android,ios
+landscape-hidpi            Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     ios
+crt                        Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           android,ios
+fps                        Cap the FPS limit to the FPS limit of the screen                                                 android,ios
+external-storage           Save game files under /sdcard/Android [Works well for Android < 13]                              android
+portmaster-simple-fx       Disable gameplay visible behind menu background, shadows, and bloom effects. From PortMaster     android,ios
+portmaster-no-background   Disable background animations and effects. From PortMaster                                       android,ios
+portmaster-square-display  Optimize for square and square-like displays. From PortMaster                                    android,ios
+portmaster-nunito-font     Replace the main font used with nunito, optimized for smaller displays. From PortMaster          android,ios
 ```
 It is possible to specify the list of patches you want to apply by supplying a comma-separated list of patches, for example:
 ```bash
@@ -93,4 +97,6 @@ I worked on a [patch of GameActivity.java](https://gist.github.com/antipatico/73
 Do you have any suggestion? Open an issue / PR!
 
 ## Credits
-This software is a rewrite of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker). It uses [APKEditor](https://github.com/REAndroid/APKEditor), [Uber Apk Signer](https://github.com/patrickfav/uber-apk-signer) and [Love Android](https://github.com/love2d/love-android).
+This software is a rewrite of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker). It uses [APKEditor](https://github.com/REAndroid/APKEditor), [Uber Apk Signer](https://github.com/patrickfav/uber-apk-signer), [Love Android](https://github.com/love2d/love-android) and [Nunito Font](https://fonts.google.com/specimen/Nunito). Moreover, some patches were ported from [nkaHong's fork of PortMaster](https://github.com/nkahoang/PortMaster-nkaHoang).
+
+Thanks for everybody contributing to this project.

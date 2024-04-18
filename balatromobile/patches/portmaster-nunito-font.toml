@@ -1,0 +1,11 @@
+name = "portmaster-nunito-font"
+description = "Replace the main font used with nunito, optimized for smaller displays. From PortMaster"
+authors = ["nkahoang", "rancossack"]
+supported_platforms = ["android", "ios"]
+
+[[versions.v0]]
+target_file = "resources/fonts/m6x11plus.ttf"
+supported_hashes = ["skip"]
+search_string = "skip"
+patch_content = "skip"
+artifact = "nunito-font.tty"
