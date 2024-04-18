@@ -1,8 +1,7 @@
 import tomllib
 from pathlib import Path
-from argparse import Namespace
 from hashlib import sha256
-from .resources import get_patch
+from .resources import get_patch, get_artifact
 
 DEFAULT_PATCHES = "basic,landscape,crt,fps"
 
@@ -11,8 +10,10 @@ class Patch:
     def __init__(self, patch: dict):
         self.target_file = patch["target_file"]
         self.hashes = patch["supported_hashes"]
-        self.search_string = patch["search_string"]
-        self.content = patch["patch_content"]
+        self.search_string = patch.get("search_string", None)
+        self.content = patch.get("patch_content", None)
+        artifact_name = patch.get("artifact", None)
+        self.artifact = get_artifact(artifact_name) if artifact_name is not None else None
 
     def check_checksum(self, balatro: Path):
         target = balatro / Path(self.target_file)
@@ -25,6 +26,9 @@ class Patch:
     
     def apply(self, balatro: Path):
         target = balatro / Path(self.target_file)
+        if self.artifact is not None:
+            target.write_bytes(self.artifact.read_bytes())
+            return
         patched = "\n".join([l if self.search_string not in l else self.content for l in target.read_text().splitlines()])
         target.write_text(patched)
 
@@ -83,8 +87,16 @@ def all_patches() -> list[PatchFile]:
         PatchFile("crt.toml"),
         PatchFile("fps.toml"),
         PatchFile("external-storage.toml"),
+        PatchFile("portmaster-simple-fx.toml"),
+        PatchFile("portmaster-no-background.toml"),
+        PatchFile("portmaster-square-display.toml"),
+        PatchFile("portmaster-nunito-font.toml"),
     ]
 
 def select_patches(patches: str) -> list[PatchFile]:
-    patches = patches.split(",")
-    return list(filter(lambda p: p.name in patches, all_patches()))
+    desired_patches = patches.split(",")
+    patch_files : list[PatchFile] = list(filter(lambda p: p.name in desired_patches, all_patches()))
+    if len(desired_patches) != len(patch_files):
+        missing_patches = [p for p in desired_patches if p not in [P.name for P in patch_files]]
+        raise ValueError(f'One or more patches not found: {",".join(missing_patches)}')
+    return patch_files
