@@ -19,8 +19,8 @@ class Patch:
         if self.artifact is not None:
             target.write_bytes(self.artifact.read_bytes())
             return
-        patched = "\n".join([l if self.search_string not in l else self.content for l in target.read_text().splitlines()])
-        target.write_text(patched)
+        patched = "\n".join([l if self.search_string not in l else self.content for l in target.read_text(encoding="utf-8").splitlines()])
+        target.write_text(patched, encoding="utf-8")
 
 
 class PatchFile:
