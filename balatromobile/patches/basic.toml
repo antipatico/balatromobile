@@ -4,7 +4,7 @@ supported_platforms = ["android"]
 
 [[patch_lists]]
   version = 0
-  supported_game_versions = ["1.0.1c-FULL"]
+  supported_game_versions = ["1.0.1c-FULL", "1.0.1e-FULL"]
   [[patch_lists.patch_files]]
     target_file = "globals.lua"
     [[patch_lists.patch_files.patches]]
