@@ -1,6 +1,6 @@
 import tomllib
 from pathlib import Path
-from .resources import get_patch, get_artifact
+from .resources import get_patch, get_artifact, list_patches
 
 DEFAULT_PATCHES = "basic,landscape,crt,fps,external-storage,shaders-flames"
 
@@ -81,19 +81,8 @@ class VersionedPatch:
 
 
 def all_patches() -> list[VersionedPatch]:
-    return [
-        VersionedPatch("basic"),
-        VersionedPatch("crt"),
-        VersionedPatch("external-storage"),
-        VersionedPatch("fps"),
-        VersionedPatch("landscape-hidpi"),
-        VersionedPatch("landscape"),
-        VersionedPatch("no-background"),
-        VersionedPatch("nunito-font"),
-        VersionedPatch("shaders-flames"),
-        VersionedPatch("simple-fx"),
-        VersionedPatch("square-display"),
-    ]
+    return [VersionedPatch(p) for p in list_patches()]
+
 
 def select_patches(patches: str) -> list[VersionedPatch]:
     desired_patches = patches.split(",")

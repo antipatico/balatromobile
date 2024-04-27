@@ -15,6 +15,10 @@ def get_artifact(name: str | Path) -> Path:
 
 def get_patch(name: str | Path) -> Path:
     return get_resorce("patches", name)
+
+def list_patches() -> list[str]:
+    with importlib.resources.as_file(importlib.resources.files(__package__)) as f:
+        return [f.stem for f in (f / "patches").glob("**/*.toml")]
     
 def all_artifacts():
     return Namespace(
