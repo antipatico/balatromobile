@@ -2,7 +2,7 @@ import tomllib
 from pathlib import Path
 from .resources import get_patch, get_artifact
 
-DEFAULT_PATCHES = "basic,landscape,crt,fps,external-storage"
+DEFAULT_PATCHES = "basic,landscape,crt,fps,external-storage,shaders-flames"
 
 
 class Patch:
@@ -90,6 +90,7 @@ def all_patches() -> list[VersionedPatch]:
         VersionedPatch("landscape"),
         VersionedPatch("no-background"),
         VersionedPatch("nunito-font"),
+        VersionedPatch("shaders-flames"),
         VersionedPatch("simple-fx"),
         VersionedPatch("square-display"),
     ]
