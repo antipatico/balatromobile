@@ -19,7 +19,7 @@ def get_patch(name: str | Path) -> Path:
 def all_artifacts():
     return Namespace(
         apk_editor = get_artifact("APKEditor-1.3.7.jar"),
-        love_apk = get_artifact("love-11.5-android-embed.apk"),
+        love_apk = get_artifact("love-11.5-SAF-android-embed.apk"),
         apk_signer = get_artifact("uber-apk-signer-1.3.0.jar"),
         android_manifest = get_artifact("AndroidManifest.xml"),
         android_res = get_artifact("res"),

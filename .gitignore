@@ -1,7 +1,8 @@
 *.swp
 __pycache__/
 *.pyc
-Balatro.exe
+Balatro-*/
+Balatro*.exe
 balatro*.apk
 dist/
 Balatro/

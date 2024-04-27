@@ -2,7 +2,7 @@ import tomllib
 from pathlib import Path
 from .resources import get_patch, get_artifact
 
-DEFAULT_PATCHES = "basic,landscape,crt,fps"
+DEFAULT_PATCHES = "basic,landscape,crt,fps,external-storage"
 
 
 class Patch:
@@ -15,7 +15,7 @@ class Patch:
             raise Exception(f"Empty patches are not allowed")
     
     def apply(self, target_file: Path):
-        target =target_file
+        target = target_file
         if self.artifact is not None:
             target.write_bytes(self.artifact.read_bytes())
             return
