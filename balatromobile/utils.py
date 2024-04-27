@@ -13,7 +13,7 @@ def run_silent(what: list[str], **kwargs):
 
 def is_java_installed() -> bool:
     try:
-        run_silent(["java", "--version"])
+        run_silent(["java", "-version"])
         return True
     except FileNotFoundError:
         return False
