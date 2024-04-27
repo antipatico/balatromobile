@@ -1,5 +1,5 @@
 description = "Basic set of patches needed to make the game run on mobile"
-authors = ["blake502"]
+authors = ["blake502", "TheCatRiX", "PGgamer2"]
 supported_platforms = ["android"]
 
 [[patch_lists]]

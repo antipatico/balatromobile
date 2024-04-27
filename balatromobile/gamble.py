@@ -60,8 +60,8 @@ def android(args: Namespace):
 
 def list_patches(args: Namespace):
     print(tabulate(
-        headers=["Name", "Description", "Platforms"],
-        tabular_data=[[p.name, p.description, ",".join(p.supported_platforms)] for p in all_patches()]
+        headers=["Name","Platforms", "Description", "Authors"],
+        tabular_data=[[p.name, ",".join(p.supported_platforms), p.description, ",".join(p.authors)] for p in all_patches()]
     ))
     pass
 

@@ -1,5 +1,5 @@
 description = "Cap the FPS limit to the FPS limit of the screen"
-authors = ["blake502"]
+authors = ["PGgamer2"]
 supported_platforms = ["android", "ios"]
 
 [[patch_lists]]
