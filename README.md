@@ -36,8 +36,6 @@ If your device is running Android 13 or later, you cannot access directly your f
 
 [![Video tut](misc/video-thumb-1.png)](https://vimeo.com/939997099 "Click to Watch!")
 
-
-
 If you disable the `external-storage` patch, you can browse the game files using `run-as` in `adb`, for example:
 ```bash
 adb shell run-as dev.bootkit.balatro ls
@@ -46,8 +44,8 @@ This is finnicky and error prone and not reccomended.
 
 ## Patches
 Every patch is versioned, allowing the upkeeping of different patches for different versions of the game.
-As of today, the version check is disabled (since only one version of the game is supported anyway).
-A refactor is needed to make the version system make sense.
+As of today, the platform check is disabled (since only android is supported anyway).
+You can force the patching of unsupported game versions by supplying the `--force` flag.
 
 You can list the available patches using the `list-patches` command:
 ```
@@ -55,15 +53,15 @@ $ balatromobile list-patches
 Name              Platforms    Description                                                                                      Authors
 ----------------  -----------  -----------------------------------------------------------------------------------------------  ---------------------------
 basic             android      Basic set of patches needed to make the game run on mobile                                       blake502,TheCatRiX,PGgamer2
-nunito-font       android,ios  Replace the main font used with nunito, optimized for smaller displays. From PortMaster          nkahoang,rancossack
-simple-fx         android,ios  Disable gameplay visible behind menu background, shadows, and bloom effects. From PortMaster     nkahoang,rancossack
-landscape-hidpi   ios          Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     blake502
 external-storage  android      Save game files under /sdcard/Android [Works well for Android < 13]                              blake502
-landscape         android,ios  Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  blake502
 fps               android,ios  Cap the FPS limit to the FPS limit of the screen                                                 PGgamer2
+landscape         android,ios  Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  blake502
+landscape-hidpi   ios          Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     blake502
 no-background     android,ios  Disable background animations and effects. From PortMaster                                       nkahoang,rancossack
+no-crt            android,ios  Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           blake502
+nunito-font       android,ios  Replace the main font used with nunito, optimized for smaller displays. From PortMaster          nkahoang,rancossack
 shaders-flames    android,ios  Fix the flames shaders for mobile                                                                PGgamer2
-crt               android,ios  Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           blake502
+simple-fx         android,ios  Disable gameplay visible behind menu background, shadows, and bloom effects. From PortMaster     nkahoang,rancossack
 square-display    android,ios  Optimize for square and square-like displays. From PortMaster                                    nkahoang,rancossack
 ```
 It is possible to specify the list of patches you want to apply by supplying a comma-separated list of patches, for example:
@@ -79,7 +77,8 @@ balatromobile android Balatro.exe --patches basic,landscape,external-storage
 ## Advanced Usage
 ```
 $ balatromobile android -h
-usage: balatromobile android [-h] [--output OUTPUT] [--patches PATCHES] [--skip-sign] [--display-name DISPLAY_NAME] [--package-name PACKAGE_NAME] BALATRO_EXE
+usage: balatromobile android [-h] [--output OUTPUT] [--patches PATCHES] [--skip-sign] [--display-name DISPLAY_NAME] [--package-name PACKAGE_NAME] [--force]
+                             BALATRO_EXE
 
 positional arguments:
   BALATRO_EXE           Path to Balatro.exe file
@@ -89,12 +88,13 @@ options:
   --output OUTPUT, -o OUTPUT
                         Output path for apk (default: balatro-GAME_VERSION.apk)
   --patches PATCHES, -p PATCHES
-                        Comma-separated list of patches to apply (default: basic,landscape,crt,fps,external-storage,shaders-flames)
+                        Comma-separated list of patches to apply (default: basic,landscape,no-crt,fps,external-storage,shaders-flames)
   --skip-sign, -s       Skip signing the apk file with Uber Apk Signer (default: False)
   --display-name DISPLAY_NAME
                         Change application display name (default: Balatro Mobile (unofficial))
   --package-name PACKAGE_NAME
                         Change application package name (default: dev.bootkit.balatro)
+  --force, -f           Force apply patches even if not compatible with supplied Balatro.exe version (default: False)
 ```
 
 ## Credits

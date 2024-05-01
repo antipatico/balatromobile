@@ -59,8 +59,7 @@ class VersionedPatch:
         self.description : str = toml["description"]
         self.authors : list = toml["authors"]
         self.supported_platforms : list = toml["supported_platforms"]
-        self.patch_lists = [PatchList(p) for p in toml['patch_lists']]
-        self.patch_lists.sort(reverse=True)
+        self.patch_lists = sorted([PatchList(p) for p in toml['patch_lists']], reverse=True)
 
     def supports_android(self) -> bool:
         return "android" in self.supported_platforms
@@ -73,6 +72,9 @@ class VersionedPatch:
 
     def __repr__(self) -> str:
         return str(self)
+    
+    def __lt__(self, other) -> str:
+        return self.name < other.name
     
     def apply(self, balatro: Path, version: str, force: bool = False) -> int:
         # TODO: allow user to specify specific patch version
@@ -89,7 +91,7 @@ class VersionedPatch:
 
 
 def all_patches() -> list[VersionedPatch]:
-    return [VersionedPatch(p) for p in list_patches()]
+    return sorted([VersionedPatch(p) for p in list_patches()])
 
 
 def select_patches(patches: str) -> list[VersionedPatch]:
