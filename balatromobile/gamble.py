@@ -1,5 +1,3 @@
-
-import subprocess
 from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 from tempfile import TemporaryDirectory
