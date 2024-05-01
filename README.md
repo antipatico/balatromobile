@@ -4,7 +4,7 @@ Create a mobile version of Balatro from the Windows base version of the game.
 
 Python rewrite of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker) by [blake502](https://github.com/blake502) and friends. Compared to the original one, it is *NIX friendly, more modular, has patch versioning and does not try to download and install tools from the internet.
 
-As of today, it only supports Android, but estending it to iOS should be trivial.
+As of today, it only supports Android. Extending it to iOS should be trivial, if anyone is interested feel free to drop a PR!
 
 
 ## Prerequisites
@@ -24,7 +24,7 @@ python3 -m pip install balatromobile
 ```bash
 balatromobile android Balatro.exe
 ```
-This command will output an APK with all needed patches and already signed. Ready to be installed on your Android device.
+This command will output an APK that is ready to be installed on your Android device.
 
 ## Save files
 If your device is running Android 12 or prior, you will find your save files in your sdcard, more specifically under:
@@ -72,8 +72,9 @@ balatromobile android Balatro.exe --patches basic,landscape,external-storage
 ```
 
 ## Supported Game Versions
-* 1.0.1e-FULL
-* 1.0.1c-FULL
+* `1.0.1f-FULL`
+* `1.0.1e-FULL` (public beta)
+* `1.0.1c-FULL` (public beta)
 
 ## Advanced Usage
 ```
@@ -95,14 +96,6 @@ options:
   --package-name PACKAGE_NAME
                         Change application package name (default: dev.bootkit.balatro)
 ```
-
-## Extended considerations on external game files for Android >= 13
-
-One way to do it, would be to ask permission for a directory using `Intent.ACTION_OPEN_DOCUMENT_TREE`. The problem with this approach is that the current implementation uses [PhysicsFS](https://icculus.org/physfs/) and [SDL](https://www.libsdl.org/). While it could be possible at the SDL level to se the _Android API_ to open and read files using Documents, that is not the way it is used today. old-school syscalls (as far as I understand) are used by _PhysicsFS_.
-
-I worked on a [patch of GameActivity.java](https://gist.github.com/antipatico/73f718d5b37b507b6b6dbf9bf92052e0), which correctly asks for permissions and store those permissions. I was also able to retrieve the preference (in a dirty and hacky way) in _SDL_ and convert back to a 'standard filesystem path'. The problem is, that is a really dirty implementation and it is very prone to errors.
-
-Do you have any suggestion? Open an issue / PR!
 
 ## Credits
 This software is a rewrite of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker). It uses [APKEditor](https://github.com/REAndroid/APKEditor), [Uber Apk Signer](https://github.com/patrickfav/uber-apk-signer), [Love Android](https://github.com/love2d/love-android) and [Nunito Font](https://fonts.google.com/specimen/Nunito). Moreover, some patches were ported from [nkaHong's fork of PortMaster](https://github.com/nkahoang/PortMaster-nkaHoang).
