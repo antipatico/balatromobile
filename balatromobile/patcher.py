@@ -45,6 +45,9 @@ class PatchList:
     
     def apply_all(self, balatro: Path):
         [p.apply_all(balatro) for p in self.patch_files]
+    
+    def __lt__(self, other):
+        return self.version < other.version
 
 
 class VersionedPatch:
@@ -57,6 +60,7 @@ class VersionedPatch:
         self.authors : list = toml["authors"]
         self.supported_platforms : list = toml["supported_platforms"]
         self.patch_lists = [PatchList(p) for p in toml['patch_lists']]
+        self.patch_lists.sort(reverse=True)
 
     def supports_android(self) -> bool:
         return "android" in self.supported_platforms
@@ -70,13 +74,17 @@ class VersionedPatch:
     def __repr__(self) -> str:
         return str(self)
     
-    def apply(self, balatro: Path, version: str) -> int:
+    def apply(self, balatro: Path, version: str, force: bool = False) -> int:
         # TODO: allow user to specify specific patch version
-        # TODO: allow user to force patch
         for p in self.patch_lists:
             if p.is_compatible(version):
                 p.apply_all(balatro)
                 return p.version
+        if force:
+            p  = self.patch_lists[0]
+            print(f'WARNING: applying incompatible patch of "{self.name}" patch, selected version "{p.version}"')
+            p.apply_all(balatro)
+            return p.version
         raise Exception(f'Cannot find any compatible Patch version of "{self.name}" for given Balatro.exe having game version "{version}"')
 
 

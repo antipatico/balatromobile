@@ -40,7 +40,7 @@ def android(args: Namespace):
             z.extractall(balatro)
         balatro_version = get_balatro_version(balatro)
         for patch in patches:
-            patch.apply(balatro, balatro_version)
+            patch.apply(balatro, balatro_version, args.force)
         app = Path(d) / "balatro_app"
         run_silent(["java", "-jar", artifacts.apk_editor.absolute(), "d", "-i", artifacts.love_apk.absolute(), "-o", app.absolute()])
         manifest_tpl = artifacts.android_manifest.read_text()
@@ -77,6 +77,7 @@ def parse_args() -> Namespace:
     android.add_argument("--skip-sign", "-s", action="store_true", help="Skip signing the apk file with Uber Apk Signer (default: %(default)s)")
     android.add_argument("--display-name", default="Balatro Mobile (unofficial)", help="Change application display name (default: %(default)s)")
     android.add_argument("--package-name", default="dev.bootkit.balatro", help="Change application package name (default: %(default)s)")
+    android.add_argument("--force", "-f", action="store_true", help="Force apply patches even if not compatible with supplied Balatro.exe version (default: %(default)s)")
     # list-patches
     android = commands.add_parser('list-patches', help='List available patches')
     return parser.parse_args()
