@@ -58,11 +58,13 @@ fps               android,ios  Cap the FPS limit to the FPS limit of the screen 
 landscape         android,ios  Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  blake502
 landscape-hidpi   ios          Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     blake502
 no-background     android,ios  Disable background animations and effects. From PortMaster                                       nkahoang,rancossack
-no-crt            android,ios  Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           blake502
+no-beta-langs     android,ios  Remove beta flag from all languages to make them selectable on mobile                            SBence
+no-crt            android,ios  Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           blake502,SBence
 nunito-font       android,ios  Replace the main font used with nunito, optimized for smaller displays. From PortMaster          nkahoang,rancossack
 shaders-flames    android,ios  Fix the flames shaders for mobile                                                                PGgamer2
 simple-fx         android,ios  Disable gameplay visible behind menu background, shadows, and bloom effects. From PortMaster     nkahoang,rancossack
 square-display    android,ios  Optimize for square and square-like displays. From PortMaster                                    nkahoang,rancossack
+max-volume        android,ios  Set master volume to 100 by default                                                              SBence
 ```
 It is possible to specify the list of patches you want to apply by supplying a comma-separated list of patches, for example:
 ```bash
