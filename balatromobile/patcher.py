@@ -2,8 +2,8 @@ import tomllib
 from pathlib import Path
 from .resources import get_patch, get_artifact, list_patches
 
-DEFAULT_PATCHES = "basic,landscape,no-crt,fps,external-storage,shaders-flames"
-
+DEFAULT_PATCHES = "basic,landscape,fps,external-storage,shaders-flames"
+BLACKSCREEN_PATCHES = "no-crt"
 
 class Patch:
     def __init__(self, patch: dict):

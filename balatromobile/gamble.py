@@ -7,7 +7,7 @@ from zipfile import ZipFile
 from tabulate import tabulate
 
 from .resources import all_artifacts
-from .patcher import all_patches, select_patches, DEFAULT_PATCHES
+from .patcher import BLACKSCREEN_PATCHES, all_patches, select_patches, DEFAULT_PATCHES
 from .utils import get_balatro_version, is_java_installed, run_silent
 from .__version__ import __version__
 
@@ -23,7 +23,16 @@ def main():
 def android(args: Namespace):
     balatro_exe = Path(args.BALATRO_EXE)
     artifacts = all_artifacts()
-    patches = select_patches(args.patches)
+    if args.patches is None:
+        while True:
+            apply_blackscreen_patches = input("Apply black screen fix? (Required for Pixels and other devices) [Y/N]: ")
+            if apply_blackscreen_patches.upper() in ("Y", "N"):
+                break
+            else:
+                print("Enter Y to apply the fix or N to continue without applying")
+        patches = select_patches(DEFAULT_PATCHES + (",{}".format(BLACKSCREEN_PATCHES) if apply_blackscreen_patches.upper() == "Y" else ""))
+    else:
+        patches = select_patches(args.patches)
     if sys.version_info.major == 3 and sys.version_info.minor < 11:
         print("WARNING: Python version < 3.11 is not tested and may not be supported")
     if not is_java_installed():
@@ -71,7 +80,7 @@ def parse_args() -> Namespace:
     android = commands.add_parser('android', help='Create an Android APK file')
     android.add_argument("BALATRO_EXE", help="Path to Balatro.exe file")
     android.add_argument("--output", "-o", required=False, help="Output path for apk (default: balatro-GAME_VERSION.apk)")
-    android.add_argument("--patches", "-p", default=DEFAULT_PATCHES, help="Comma-separated list of patches to apply (default: %(default)s)")
+    android.add_argument("--patches", "-p", help="Comma-separated list of patches to apply (default: {})".format(DEFAULT_PATCHES))
     android.add_argument("--skip-sign", "-s", action="store_true", help="Skip signing the apk file with Uber Apk Signer (default: %(default)s)")
     android.add_argument("--display-name", default="Balatro Mobile (unofficial)", help="Change application display name (default: %(default)s)")
     android.add_argument("--package-name", default="dev.bootkit.balatro", help="Change application package name (default: %(default)s)")
