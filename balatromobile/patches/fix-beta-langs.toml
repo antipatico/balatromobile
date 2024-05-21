@@ -1,0 +1,22 @@
+description = "Make beta langs selectable on mobile"
+authors = ["SBence", "antipatico"]
+supported_platforms = ["android", "ios"]
+
+[[patch_lists]]
+  version = 0
+  # supported_game_versions = all NOT TESTED
+
+  [[patch_lists.patch_files]]
+    target_file = "functions/button_callbacks.lua"
+    [[patch_lists.patch_files.patches]]
+      search_string = "if (_infotip_object.config.set ~= e.config.ref_table.label) and (not G.F_NO_ACHIEVEMENTS) then"
+      patch_content = "if (_infotip_object.config.set ~= e.config.ref_table.label) then"
+
+### Alternative patch (removes alert):
+
+#     target_file = "functions/UI_definitions.lua"
+#     [[patch_lists.patch_files.patches]]
+#       search_string = """_row[#_row+1] = {n=G.UIT.C, config={align = "cm", func = 'beta_lang_alert', padding = 0.05, r = 0.1, minh = 0.7, minw = 4.5, button = v.beta and 'warn_lang' or 'change_lang', ref_table = v, colour = v.beta and G.C.RED or G.C.BLUE, hover = true, shadow = true, focus_args = {snap_to = (k == 1)}}, nodes={"""
+#       patch_content = """
+#       _row[#_row+1] = {n=G.UIT.C, config={align = "cm", func = 'beta_lang_alert', padding = 0.05, r = 0.1, minh = 0.7, minw = 4.5, button = 'change_lang', ref_table = v, colour = v.beta and G.C.RED or G.C.BLUE, hover = true, shadow = true, focus_args = {snap_to = (k == 1)}}, nodes={
+# """
