@@ -54,11 +54,13 @@ Name              Platforms    Description                                      
 ----------------  -----------  -----------------------------------------------------------------------------------------------  ---------------------------
 basic             android      Basic set of patches needed to make the game run on mobile                                       blake502,TheCatRiX,PGgamer2
 external-storage  android      Save game files under /sdcard/Android [Works well for Android < 13]                              blake502
+fix-beta-langs    android,ios  Make beta langs selectable on mobile                                                             SBence,antipatico
 fps               android,ios  Cap the FPS limit to the FPS limit of the screen                                                 PGgamer2
 landscape         android,ios  Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  blake502
 landscape-hidpi   ios          Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     blake502
+max-volume        android,ios  Set master volume to 100 by default                                                              SBence
 no-background     android,ios  Disable background animations and effects. From PortMaster                                       nkahoang,rancossack
-no-crt            android,ios  Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           blake502
+no-crt            android,ios  Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]                           blake502,SBence
 nunito-font       android,ios  Replace the main font used with nunito, optimized for smaller displays. From PortMaster          nkahoang,rancossack
 shaders-flames    android,ios  Fix the flames shaders for mobile                                                                PGgamer2
 simple-fx         android,ios  Disable gameplay visible behind menu background, shadows, and bloom effects. From PortMaster     nkahoang,rancossack
@@ -88,7 +90,8 @@ options:
   --output OUTPUT, -o OUTPUT
                         Output path for apk (default: balatro-GAME_VERSION.apk)
   --patches PATCHES, -p PATCHES
-                        Comma-separated list of patches to apply (default: basic,landscape,no-crt,fps,external-storage,shaders-flames)
+                        Comma-separated list of patches to apply (default: basic,landscape,no-crt,fps,external-storage,shaders-flames,fix-beta-langs,
+                        max-volume)
   --skip-sign, -s       Skip signing the apk file with Uber Apk Signer (default: False)
   --display-name DISPLAY_NAME
                         Change application display name (default: Balatro Mobile (unofficial))

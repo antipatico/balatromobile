@@ -1,5 +1,5 @@
 description = "Disable CRT effect [Fixes blackscreen bug on Pixels and other devices]"
-authors = ["blake502"]
+authors = ["blake502", "SBence"]
 supported_platforms = ["android", "ios"]
 
 [[patch_lists]]
@@ -16,4 +16,16 @@ supported_platforms = ["android", "ios"]
     target_file = "game.lua"
     [[patch_lists.patch_files.patches]]
       search_string = "G.SHADERS['CRT'])"
+      # patch_content = ""
+
+  [[patch_lists.patch_files]]
+    target_file = "functions/UI_definitions.lua"
+    [[patch_lists.patch_files.patches]]
+      search_string = "create_slider({label = localize('b_set_CRT'),w = 4, h = 0.4, ref_table = G.SETTINGS.GRAPHICS, ref_value = 'crt', min = 0, max = 100})"
+      # patch_content = ""
+
+  [[patch_lists.patch_files]]
+    target_file = "functions/UI_definitions.lua"
+    [[patch_lists.patch_files.patches]]
+      search_string = "create_option_cycle({w = 4,scale = 0.8, label = localize(\"b_set_CRT_bloom\"),options = localize('ml_bloom_opt'), opt_callback = 'change_crt_bloom', current_option = G.SETTINGS.GRAPHICS.bloom})"
       # patch_content = ""
