@@ -1,12 +1,22 @@
 import subprocess
+from os import environ
 from pathlib import Path
 
+DEBUG = (debug := environ.get("BALATROMOBILE_DEBUG")) and (debug.lower() != "false")
+
 def run_silent(what: list[str], **kwargs):
+    outpipe = subprocess.DEVNULL
+
+    if DEBUG:
+        from sys import stderr
+        print(f"[DEBUG] `run_silent`: {what=}", file=stderr)
+        outpipe = stderr
+
     subprocess.run(
         what,
         stdin=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        stdout=outpipe,
+        stderr=outpipe,
         check=True,
         **kwargs
     )
