@@ -2,3 +2,5 @@
 *.jar filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
 *.xcf filter=lfs diff=lfs merge=lfs -text
+zipalign-* filter=lfs diff=lfs merge=lfs -text
+balatromobile/artifacts/uber-debug.keystore filter=lfs diff=lfs merge=lfs -text
