@@ -53,8 +53,18 @@ def android(args: Namespace):
         if args.skip_sign:
             shutil.move(apk.absolute(), output_apk.absolute())
         else:
-            run_silent(["java", "-jar", artifacts.apk_signer.absolute(), "-a", apk.absolute()])
-            shutil.move(Path(d) / "balatro-aligned-debugSigned.apk", output_apk)
+            zipaligned_apk = Path(d) / "balatro-aligned.apk"
+            run_silent([artifacts.zipalign.absolute(), "-i", apk.absolute(), "-o", zipaligned_apk.absolute()])
+            signed_apk = Path(d) / "balatro-aligned-debugSigned.apk"
+            run_silent([
+                "java", "-jar", artifacts.apksigner.absolute(), "sign",
+                "--ks-key-alias", "androiddebugkey",
+                "--ks", artifacts.uber_keystore.absolute(),
+                "--ks-pass", "pass:android",
+                "--out", signed_apk.absolute(),
+                zipaligned_apk.absolute()
+            ])
+            shutil.move(signed_apk, output_apk)
 
 def list_patches(args: Namespace):
     print(tabulate(
