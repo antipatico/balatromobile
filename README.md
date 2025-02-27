@@ -72,6 +72,7 @@ balatromobile android Balatro.exe --patches basic,landscape,external-storage
 ```
 
 ## Supported Game Versions
+* `1.0.1o-FULL`
 * `1.0.1n-FULL`
 * `1.0.1m-FULL`
 * `1.0.1g-FULL`
