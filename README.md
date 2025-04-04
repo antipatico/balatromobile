@@ -48,7 +48,8 @@ As of today, the platform check is disabled (since only android is supported any
 You can force the patching of unsupported game versions by supplying the `--force` flag.
 
 You can list the available patches using the `list-patches` command:
-```
+
+```console
 $ balatromobile list-patches
 Name              Platforms    Description                                                                                      Authors
 ----------------  -----------  -----------------------------------------------------------------------------------------------  ---------------------------
@@ -56,6 +57,7 @@ basic             android      Basic set of patches needed to make the game run 
 external-storage  android      Save game files under /sdcard/Android [Works well for Android < 13]                              blake502
 fix-beta-langs    android,ios  Make beta langs selectable on mobile                                                             SBence,antipatico
 fps               android,ios  Cap the FPS limit to the FPS limit of the screen                                                 PGgamer2
+fps-settings      android,ios  Adds an FPS limit option to the graphics settings menu                                           janw4ld
 landscape         android,ios  Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  blake502
 landscape-hidpi   ios          Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     blake502
 max-volume        android,ios  Set master volume to 100 by default                                                              SBence
@@ -66,6 +68,7 @@ shaders-flames    android,ios  Fix the flames shaders for mobile                
 simple-fx         android,ios  Disable gameplay visible behind menu background, shadows, and bloom effects. From PortMaster     nkahoang,rancossack
 square-display    android,ios  Optimize for square and square-like displays. From PortMaster                                    nkahoang,rancossack
 ```
+
 It is possible to specify the list of patches you want to apply by supplying a comma-separated list of patches, for example:
 ```bash
 balatromobile android Balatro.exe --patches basic,landscape,external-storage
@@ -105,6 +108,6 @@ options:
 ```
 
 ## Credits
-This software is a rewrite of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker). It uses [APKEditor](https://github.com/REAndroid/APKEditor), [Uber Apk Signer](https://github.com/patrickfav/uber-apk-signer), [Love Android](https://github.com/love2d/love-android) and [Nunito Font](https://fonts.google.com/specimen/Nunito). Moreover, some patches were ported from [nkaHong's fork of PortMaster](https://github.com/nkahoang/PortMaster-nkaHoang).
+This software is a rewrite of [balatro-apk-maker](https://github.com/blake502/balatro-apk-maker). It uses [APKEditor](https://github.com/REAndroid/APKEditor), [Love Android](https://github.com/love2d/love-android) and [Nunito Font](https://fonts.google.com/specimen/Nunito). Moreover, some patches were ported from [nkaHong's fork of PortMaster](https://github.com/nkahoang/PortMaster-nkaHoang).
 
 Thanks for everybody contributing to this project.
