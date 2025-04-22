@@ -39,7 +39,7 @@ G.FUNCS.__balatromobile_fps_cap_callback = function(option)
   G.SETTINGS.__balatromobile_FPS_CAP = option.to_val
   G.FPS_CAP = __balatromobile_fps_cap_options.values[option.to_val]
 end
-G.FPS_CAP = G.FUNCS.__balatromobile_fps_cap_callback {
+G.FUNCS.__balatromobile_fps_cap_callback {
   to_val = G.SETTINGS.__balatromobile_FPS_CAP or "Monitor"
 }
 """
