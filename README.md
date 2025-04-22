@@ -57,7 +57,7 @@ basic             android      Basic set of patches needed to make the game run 
 external-storage  android      Save game files under /sdcard/Android [Works well for Android < 13]                              blake502
 fix-beta-langs    android,ios  Make beta langs selectable on mobile                                                             SBence,antipatico
 fps               android,ios  Cap the FPS limit to the FPS limit of the screen                                                 PGgamer2
-fps-settings      android,ios  Adds an FPS limit option to the graphics settings menu                                           janw4ld
+fps-settings      android,ios  Adds an FPS limit option to the graphics settings menu                                           kasimeka
 landscape         android,ios  Forces the game to always stay in landscape mode, ignoring the screeen orentation of the device  blake502
 landscape-hidpi   ios          Forces the game to always stay in landscape mode and apply hidpi fix for iOS                     blake502
 max-volume        android,ios  Set master volume to 100 by default                                                              SBence
