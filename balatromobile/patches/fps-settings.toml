@@ -1,5 +1,5 @@
 description = "Adds an FPS limit option to the graphics settings menu"
-authors = ["janw4ld"]
+authors = ["kasimeka"]
 supported_platforms = ["android", "ios"]
 
 [[patch_lists]]
